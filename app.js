@@ -66,7 +66,7 @@
             return response.then(function(result) {
                 var menuData = result.data;
                 var foundItems = [];
-                menuData.menu_items.forEach(function(item) {
+                for item in listData.menu_items {
                     if (item.description.indexOf(searchTerm) != -1) {
                         foundItems.push({
                             name: item.name,
