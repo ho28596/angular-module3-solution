@@ -74,7 +74,7 @@
                             description: item.description
                         });
                     }
-                });
+                };
                 return foundItems;
             });
         };
