@@ -34,6 +34,7 @@
         menu.foundItems = "";
         menu.search = function() {
             menu.nothingFound = "";
+            console.log("menu.searchTerm:" + menu.searchTerm);
             if (menu.searchTerm) { // check if empty
                 var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm.toLowerCase());
                 promise.then(function(foundItems) {
@@ -65,6 +66,7 @@
 
             return response.then(function(result) {
                 var menuData = result.data;
+                console.log("menuData:" + menuData);
                 var foundItems = [];
                 for (var item in menuData.menu_items) {
                     if (item.description.indexOf(searchTerm) != -1) {
