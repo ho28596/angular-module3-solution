@@ -58,8 +58,8 @@
               method: "GET",
               url: (ApiBasePath + "/menu_items.json")
             })
-            console.log("response: " + response.data.menu_items);
-            return response.data.menu_items;
+            console.log("response: " + response.data);
+            return response.data;
         };
     }
 
