@@ -5,6 +5,10 @@ input[type="text"] {
   width: 200px;
   float: left;
 }
+.menu {
+  clear: both;
+  float: none;
+}
 .narrow-button {
   float: left;
   margin-left: 10px;
