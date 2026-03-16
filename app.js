@@ -28,7 +28,7 @@
             var promise = MenuSearchService.getMatchedMenuItems();
                 promise.then(function(foundItems) {
                 menu.foundItems = foundItems;
-                console.log("foundItems: ' + menu.foundItems); 
+                console.log("foundItems: " + menu.foundItems); 
                 })
                 .catch(function (error) {
                   console.log("Something went terribly wrong.");
