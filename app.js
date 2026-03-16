@@ -54,11 +54,11 @@ function MenuSearchService($http, ApiBasePath) {
   service.getMatchedMenuItems = function (searchTerm) {
     return $http({
       method: "GET",
-      url: (ApiBasePath + "/menu_items/L.json")
+      url: (ApiBasePath + "/menu_items.json")
     })
     .then(function (result) {
       // process result and only keep items that match
-    var foundItems = result.data.menu_items.filter(function (item) {
+    var foundItems = result.data.categories.menu_items.filter(function (item) {
       return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
     }, service);
 
