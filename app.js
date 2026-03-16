@@ -26,7 +26,6 @@ function NarrowItDownController(MenuSearchService) {
   menu.categories = [];
   menu.searchTerm = "";
   menu.found = [];
-  menu.categories = []; 
   
   //recupero le categorie del menu
   var promise = MenuSearchService.getCategories();
