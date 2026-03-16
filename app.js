@@ -23,18 +23,39 @@ function FoundItemsDirective() {
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
   var menu = this;
-  menu.categories = [];
+  menu.categories = [
+  {"short_name": "L"},
+  {"short_name": "A"},
+  {"short_name": "B"},
+  {"short_name": "SP"},
+  {"short_name": "C"},
+  {"short_name": "F"},
+  {"short_name": "V"},
+  {"short_name": "DK"},
+  {"short_name": "VG"},
+  {"short_name": "CU"},
+  {"short_name": "NL"},
+  {"short_name": "NF"},
+  {"short_name": "PF"},
+  {"short_name": "FR"},
+  {"short_name": "CM"},
+  {"short_name": "FY"},
+  {"short_name": "SO"},
+  {"short_name": "DS"},
+  {"short_name": "D"},
+  {"short_name": "SR"}
+  ];
   menu.searchTerm = "";
   menu.found = [];
   
   //recupero le categorie del menu
-  var promise = MenuSearchService.getCategories();
-    promise.then(function (response) {
-    menu.categories = response.data;
-  })
-  .catch(function (error) {
-    console.log("Something went terribly wrong during get categories");
-  });
+  //var promise = MenuSearchService.getCategories();
+  //  promise.then(function (response) {
+  //  menu.categories = response.data;
+  //})
+  //.catch(function (error) {
+  //  console.log("Something went terribly wrong during get categories");
+  //});
 
   for (var cat in menu.categories) {
    console.log("cat: " + cat);
