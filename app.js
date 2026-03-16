@@ -32,7 +32,7 @@ function NarrowItDownController(MenuSearchService) {
       return;
     }
 
-    var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm);
+    var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, "L");
 
     promise.then(function (foundItems) {
         menu.found = foundItems;
@@ -51,10 +51,11 @@ MenuSearchService.$inject = ['$http', 'ApiBasePath']
 function MenuSearchService($http, ApiBasePath) {
   var service = this;
 
-  service.getMatchedMenuItems = function (searchTerm) {
+  service.getMatchedMenuItems = function (searchTerm, searchCat) {
+    this.searchCat = searchCat;
     return $http({
       method: "GET",
-      url: (ApiBasePath + "/menu_items.json")
+      url: (ApiBasePath + "/menu_items/" + searchCat + ".json")
     })
     .then(function (result) {
       // process result and only keep items that match
