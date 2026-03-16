@@ -23,29 +23,18 @@ function FoundItemsDirective() {
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
   var menu = this;
-  menu.categories = ["L","A","B","SP","C","F","V","DK","VG","CU","NL","NF","PF","FR","CM","FY","SO","DS","D","SR"];
   menu.searchTerm = "";
   menu.found = [];
   
-  //recupero le categorie del menu
-  //var promise = MenuSearchService.getCategories();
-  //  promise.then(function (response) {
-  //  menu.categories = response.data;
-  //})
-  //.catch(function (error) {
-  //  console.log("Something went terribly wrong during get categories");
-  //});
-
   menu.filterMenu = function () {
     menu.found = [];   
     if (!menu.searchTerm) {
       return;
     }
 
-    for (var category of menu.categories) {  
-      var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, category);
-      promise.then(function (foundItems) {
-          menu.found.push.apply(menu.found, foundItems);
+    MenuSearchService.getMatchedMenuItems(menu.searchTerm)
+      .then(function (foundItems) {
+          menu.found = foundItems;
       })
       .catch(function (error) {
         console.log("Something went terribly wrong.");
@@ -62,27 +51,30 @@ MenuSearchService.$inject = ['$http', 'ApiBasePath']
 function MenuSearchService($http, ApiBasePath) {
   var service = this;
 
-  service.getCategories = function () {
+  service.getMatchedMenuItems = function (searchTerm) {
+    
     return $http({
       method: "GET",
-      url: (ApiBasePath + "/categories.json")
-    })
-  };
-  
-  service.getMatchedMenuItems = function (searchTerm, searchCat) {
-    this.searchCat = searchCat;
-    return $http({
-      method: "GET",
-      url: (ApiBasePath + "/menu_items/" + searchCat + ".json")
+      url: (ApiBasePath + "/menu_items.json")
     })
     .then(function (result) {
       // process result and only keep items that match
-    var foundItems = result.data.menu_items.filter(function (item) {
-      return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-    }, service);
-
-    // return processed items
-    return foundItems;
+        var allItems = [];
+        var foundItems = [];
+           
+        // Iterate through all categories and collect all menu items
+        for (var category in result.data) {
+             if (result.data[category].menu_items) {
+                allItems = allItems.concat(result.data[category].menu_items);
+             }
+        }
+        // Filter items by search term
+        for (var i = 0; i < allItems.length; i++) {
+           if (allItems[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+              foundItems.push(allItems[i]);
+           }
+        }
+        return foundItems;
   });
 
   service.removeItem = function (itemIndex) {
