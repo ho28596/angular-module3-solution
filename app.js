@@ -60,7 +60,9 @@
             })
             .then(function (result) {
             // process result and only keep items that match
-            var foundItems = result.data.menu_items
+            console.log("result: " + result);
+            var foundItems = result.data.menu_items;
+            console.log("foundItems: " + foundItems);   
             return foundItems;
             });    
         };
