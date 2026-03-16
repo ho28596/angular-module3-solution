@@ -37,8 +37,8 @@ function NarrowItDownController(MenuSearchService) {
   //});
 
   menu.filterMenu = function () {
+    menu.found = [];   
     if (!menu.searchTerm) {
-      menu.found = [];
       return;
     }
 
