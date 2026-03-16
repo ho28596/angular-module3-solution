@@ -34,6 +34,10 @@ function NarrowItDownController(MenuSearchService) {
   .catch(function (error) {
     console.log("Something went terribly wrong during get categories");
   });
+
+  for (var cat in menu.categories) {
+   console.log("cat: " cat);
+  }
   
   menu.filterMenu = function () {
     if (!menu.searchTerm) {
