@@ -23,26 +23,17 @@
     function NarrowItDownController(MenuSearchService) {
         var menu = this;
         menu.searchTerm = "";
-        menu.nothingFound = "";
-        menu.foundItems = [];
+               
         menu.search = function() {
-            menu.nothingFound = "";
-            console.log("menu.searchTerm:" + menu.searchTerm);
-            if (menu.searchTerm) { // check if empty
-                var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm.toLowerCase());
+            var promise = MenuSearchService.getMatchedMenuItems();
                 promise.then(function(foundItems) {
-                    if (foundItems.length == 0) {
-                        menu.nothingFound = "Nothing found";
-                    }
-                    menu.foundItems = foundItems;
+                menu.foundItems = foundItems;
+                console.log("foundItems: ' + menu.foundItems); 
                 })
-                 .catch(function (error) {
+                .catch(function (error) {
                   console.log("Something went terribly wrong.");
                 });
 
-            } else {
-                menu.nothingFound = "Nothing found";
-                menu.foundItems = "";
             }
         };
         menu.removeItem = function(itemIndex) {
@@ -53,13 +44,12 @@
     MenuSearchService.$inject = ['$http', 'ApiBasePath']
     function MenuSearchService($http, ApiBasePath) {
         var service = this;
-        service.getMatchedMenuItems = function(searchTerm) {
+        service.getMatchedMenuItems = function() {
             var response = $http({
               method: "GET",
               url: (ApiBasePath + "/menu_items.json")
             })
-            console.log("response: " + response.data);
-            return response.data;
+            return response;
         };
     }
 
