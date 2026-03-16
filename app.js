@@ -40,15 +40,16 @@ function NarrowItDownController(MenuSearchService) {
       menu.found = [];
       return;
     }
-    
-    var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, "L");
 
-    promise.then(function (foundItems) {
-        menu.found.push.apply(menu.found, foundItems);
-    })
-    .catch(function (error) {
-      console.log("Something went terribly wrong.");
-    });
+    for (var category in menu.categories) {  
+      var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, category.short_name);
+      promise.then(function (foundItems) {
+          menu.found.push.apply(menu.found, foundItems);
+      })
+      .catch(function (error) {
+        console.log("Something went terribly wrong.");
+      });
+    } 
   };
 
   menu.removeItem = function (itemIndex) {
