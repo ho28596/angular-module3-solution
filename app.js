@@ -36,7 +36,7 @@ function NarrowItDownController(MenuSearchService) {
   //  console.log("Something went terribly wrong during get categories");
   //});
 
-  for (var cat in menu.categories) {
+  for (var cat of menu.categories) {
    console.log("cat: " + cat);
   }
   console.log("length: " + menu.categories.length);
