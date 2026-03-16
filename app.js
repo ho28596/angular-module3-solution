@@ -23,28 +23,7 @@ function FoundItemsDirective() {
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
   var menu = this;
-  menu.categories = [
-  {"short_name": "L"},
-  {"short_name": "A"},
-  {"short_name": "B"},
-  {"short_name": "SP"},
-  {"short_name": "C"},
-  {"short_name": "F"},
-  {"short_name": "V"},
-  {"short_name": "DK"},
-  {"short_name": "VG"},
-  {"short_name": "CU"},
-  {"short_name": "NL"},
-  {"short_name": "NF"},
-  {"short_name": "PF"},
-  {"short_name": "FR"},
-  {"short_name": "CM"},
-  {"short_name": "FY"},
-  {"short_name": "SO"},
-  {"short_name": "DS"},
-  {"short_name": "D"},
-  {"short_name": "SR"}
-  ];
+  menu.categories = ["L","A","B","SP","C","F","V","DK","VG","CU","NL","NF","PF","FR","CM","FY","SO","DS","D","SR"];
   menu.searchTerm = "";
   menu.found = [];
   
