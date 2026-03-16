@@ -1,68 +1,75 @@
-(function (){
-  "use strict";
 
-  angular.module('NarrowItDownApp', [])
-  .controller('NarrowItDownController', NarrowItDownController)
-  .service('MenuSearchService' , MenuSearchService)
-  .constant('ApiBasePath', "https://coursera-jhu-default-rtdb.firebaseio.com")
-  .directive("foundItems", function() {
-    var ddo = {
-      restrict:'E',
-      templateUrl: 'fooditems.html',
-      scope: {
-        foundItems: '<',
-        myTitle: '@title',
-        onRemove: '&'
-      },
-      // controller: 'ShoppingListDirectiveController as list',
-      controller: FoundItemsController,
-      controllerAs: 'fic',
-      bindToController: true
-    };
-    return ddo;
+(function () {
+'use strict';
+
+angular.module('NarrowItDownApp', [])
+.controller('NarrowItDownController', NarrowItDownController)
+.service('MenuSearchService', MenuSearchService)
+.directive('foundItems', FoundItemsDirective)
+.constant('ApiBasePath', "https://coursera-jhu-default-rtdb.firebaseio.com");
+  
+function FoundItemsDirective() {
+  var ddo = {
+    restrict: "E",
+    templateUrl: 'foundItems.html',
+    scope: {
+      foundItems: '<',
+      onRemove: '&'
+    }
+  }
+  return ddo;
+}
+
+NarrowItDownController.$inject = ['MenuSearchService'];
+function NarrowItDownController(MenuSearchService) {
+  var menu = this;
+  menu.searchTerm = "";
+  menu.found = [];
+
+  menu.filterMenu = function () {
+    if (!menu.searchTerm) {
+      menu.found = [];
+      return;
+    }
+
+    var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm);
+
+    promise.then(function (foundItems) {
+        menu.found = foundItems;
+    })
+    .catch(function (error) {
+      console.log("Something went terribly wrong.");
+    });
+  };
+
+  menu.removeItem = function (itemIndex) {
+    menu.found.splice(itemIndex, 1);
+  };
+}
+
+MenuSearchService.$inject = ['$http', 'ApiBasePath']
+function MenuSearchService($http, ApiBasePath) {
+  var service = this;
+
+  service.getMatchedMenuItems = function (searchTerm) {
+    return $http({
+      method: "GET",
+      url: (ApiBasePath + "/menu_items.json")
+    })
+    .then(function (result) {
+      // process result and only keep items that match
+    var foundItems = result.data.menu_items.filter(function (item) {
+      return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+    }, service);
+
+    // return processed items
+    return foundItems;
   });
-  function FoundItemsController(){
-    var list = this;
-  }
-  NarrowItDownController.$inject = ['MenuSearchService'];
-  function NarrowItDownController(MenuSearchService){
-    var cntrl = this;
-    cntrl.searchTerm;
-    cntrl.found;
-    cntrl.error;
-    cntrl.finder = function(){
-      var finder = MenuSearchService.getMatchedMenuItems(cntrl.searchTerm);
-                                      finder.then(function (response) {
-                                        cntrl.found = response;
-                                      })
-                                      .catch(function (error) {
-                                        console.log("An Error Occured !");
-                                      });
-    }
-    cntrl.remover = function(key){
-      cntrl.found.splice(key, 1);
-    }
-  }
-  MenuSearchService.$inject = ['$http', 'ApiBasePath'];
-  function MenuSearchService ($http , ApiBasePath){
-    var service = this;
-    service.getMatchedMenuItems = function(searchTerm){
-      return $http({
-        method: "GET",
-        url: (ApiBasePath + "/menu_items.json")}
-      ).then(function (result) {
-          // process result and only keep items that match
-          var fitems = result.data.menu_items;
-          var foundItems = [];
-          angular.forEach(fitems , function(value, key) {
-            console.log(value);
-            if(value.description.indexOf(searchTerm) !== -1){
-              foundItems.push({'short_name':value.short_name , 'name': value.name , 'description':value.description});
-            }
-          });
-          // return processed items
-          return foundItems;
-      });
-    }
-  }
+
+  service.removeItem = function (itemIndex) {
+
+  };
+};
+}
+
 })();
