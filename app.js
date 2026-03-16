@@ -55,7 +55,7 @@
           var fitems = result.data.menu_items;
           var foundItems = [];
           angular.forEach(fitems , function(value, key) {
-            //console.log(value);
+            console.log(value);
             if(value.description.indexOf(searchTerm) !== -1){
               foundItems.push({'short_name':value.short_name , 'name': value.name , 'description':value.description});
             }
