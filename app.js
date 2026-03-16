@@ -4,7 +4,7 @@
   angular.module('NarrowItDownApp', [])
   .controller('NarrowItDownController', NarrowItDownController)
   .service('MenuSearchService' , MenuSearchService)
-  .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com/")
+  .constant('ApiBasePath', "https://coursera-jhu-default-rtdb.firebaseio.com")
   .directive("foundItems", function() {
     var ddo = {
       restrict:'E',
@@ -49,7 +49,7 @@
     service.getMatchedMenuItems = function(searchTerm){
       return $http({
         method: "GET",
-        url: (ApiBasePath + "menu_items.json")}
+        url: (ApiBasePath + "/menu_items.json")}
       ).then(function (result) {
           // process result and only keep items that match
           var fitems = result.data.menu_items;
