@@ -1,0 +1,28 @@
+<div class="menu">
+  <div ng-if="(foundItems.length == 0)">
+    <h3> Nothing found.</h3>
+  </div>
+  <div ng-if="(foundItems.length > 0)">
+    <h3> Items found: {{foundItems.length}}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Name</th>
+          <th>Short Name</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in foundItems">
+          <td> {{ $index+1 }} </td>
+          <td> {{ item.name }} </td>
+          <td> {{ item.short_name }} </td>
+          <td> {{ item.description }} </td>
+          <td> <button ng-click="onRemove({index: $index});">Don't want this one!</button></td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
