@@ -1,0 +1,12 @@
+
+<div ng-repeat="item in fic.foundItems track by $index" style="margin-top: 10px;" class="row container">
+      <div class="mycustomcard">
+        <center>
+          <h3>{{item.short_name}}</h3>
+          <h2>{{item.name}}</h2>
+          <p>{{item.description}}</p>
+          <button class="btn btn-warning" ng-click="fic.onRemove({index: $index})">Don't Want This!</button>
+        </center>
+      </div>
+</div>
+<h3 style="color:red;" ng-if="fic.foundItems.length == 0">Nothing Found !</h3>
