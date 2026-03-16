@@ -59,7 +59,7 @@ function MenuSearchService($http, ApiBasePath) {
     })
     .then(function (result) {
       // process result and only keep items that match
-    var foundItems = result.data.categories.menu_items.filter(function (item) {
+    var foundItems = result.data.menu_items.filter(function (item) {
       return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
     }, service);
 
