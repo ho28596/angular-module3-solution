@@ -36,7 +36,7 @@ function NarrowItDownController(MenuSearchService) {
   });
 
   for (var cat in menu.categories) {
-   console.log("cat: " cat);
+   console.log("cat: " + cat);
   }
   
   menu.filterMenu = function () {
