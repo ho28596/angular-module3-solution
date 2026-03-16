@@ -3,35 +3,28 @@
     angular.module('NarrowItDownApp', [])
         .controller('NarrowItDownController', NarrowItDownController)
         .service('MenuSearchService', MenuSearchService)
-        .constant('ApiBasePath', "https://coursera-jhu-default-rtdb.firebaseio.com/")
+        .constant('ApiBasePath', "https://coursera-jhu-default-rtdb.firebaseio.com")
         .directive('foundItems', FoundItemsDirective);
 
     function FoundItemsDirective() {
         var ddo = {
+            restrict: "E",
             templateUrl: 'foundItems.html',
             scope: {
                 items: '<',
                 myTitle: '@title',
                 onRemove: '&'
             },
-            controller: NarrowItDownController,
-            controllerAs: 'menu',
-            bindToController: true
         };
-
         return ddo;
     }
 
-    function FoundItemsDirectiveController() {
-        var menu = this;
-    }
-
     NarrowItDownController.$inject = ['MenuSearchService'];
-
     function NarrowItDownController(MenuSearchService) {
         var menu = this;
         menu.searchTerm = "";
-        menu.foundItems = "";
+        menu.nothingFound = "";
+        menu.foundItems = [];
         menu.search = function() {
             menu.nothingFound = "";
             console.log("menu.searchTerm:" + menu.searchTerm);
@@ -43,6 +36,9 @@
                     }
                     menu.foundItems = foundItems;
                 })
+                 .catch(function (error) {
+                  console.log("Something went terribly wrong.");
+                });
 
             } else {
                 menu.nothingFound = "Nothing found";
@@ -55,30 +51,21 @@
     }
 
     MenuSearchService.$inject = ['$http', 'ApiBasePath']
-
     function MenuSearchService($http, ApiBasePath) {
         var service = this;
         service.getMatchedMenuItems = function(searchTerm) {
-            var response = $http({
-                method: "GET",
-                url: (ApiBasePath + "/menu_items.json")
-            });
-
-            return response.then(function(result) {
-                var menuData = result.data;
-                console.log("menuData:" + menuData);
-                var foundItems = [];
-                for (var item in menuData.menu_items) {
-                    if (item.description.indexOf(searchTerm) != -1) {
-                        foundItems.push({
-                            name: item.name,
-                            short_name: item.short_name,
-                            description: item.description
-                        });
-                    }
-                };
-                return foundItems;
-            });
+            return $http({
+              method: "GET",
+              url: (ApiBasePath + "/menu_items.json")
+            })
+            .then(function (result) {
+            // process result and only keep items that match
+            var foundItems = result.data.menu_items.filter(function (item) {
+              return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+            }, service);
+            // return processed items
+            return foundItems;
+            });    
         };
     }
 
