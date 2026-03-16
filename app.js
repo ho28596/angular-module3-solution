@@ -25,13 +25,22 @@ function NarrowItDownController(MenuSearchService) {
   var menu = this;
   menu.searchTerm = "";
   menu.found = [];
-
+  
+  //recupero le categorie del menu
+  var promise = MenuSearchService.getCategories();
+    promise.then(function (response) {
+    menu.categories = response.data;
+  })
+  .catch(function (error) {
+    console.log("Something went terribly wrong during get categories");
+  });
+  
   menu.filterMenu = function () {
     if (!menu.searchTerm) {
       menu.found = [];
       return;
     }
-
+    
     var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, "L");
 
     promise.then(function (foundItems) {
@@ -51,6 +60,13 @@ MenuSearchService.$inject = ['$http', 'ApiBasePath']
 function MenuSearchService($http, ApiBasePath) {
   var service = this;
 
+  service.getCategories = function () {
+    return $http({
+      method: "GET",
+      url: (ApiBasePath + "/categories.json")
+    })
+  };
+  
   service.getMatchedMenuItems = function (searchTerm, searchCat) {
     this.searchCat = searchCat;
     return $http({
