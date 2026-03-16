@@ -36,18 +36,13 @@ function NarrowItDownController(MenuSearchService) {
   //  console.log("Something went terribly wrong during get categories");
   //});
 
-  for (var cat of menu.categories) {
-   console.log("cat: " + cat);
-  }
-  console.log("length: " + menu.categories.length);
-  
   menu.filterMenu = function () {
     if (!menu.searchTerm) {
       menu.found = [];
       return;
     }
 
-    for (var category in menu.categories) {  
+    for (var category of menu.categories) {  
       var promise = MenuSearchService.getMatchedMenuItems(menu.searchTerm, category.short_name);
       promise.then(function (foundItems) {
           menu.found.push.apply(menu.found, foundItems);
