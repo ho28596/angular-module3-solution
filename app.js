@@ -39,7 +39,7 @@ function NarrowItDownController(MenuSearchService) {
   for (var cat in menu.categories) {
    console.log("cat: " + cat);
   }
-  console.log("length: " + menu.categories.size);
+  console.log("length: " + menu.categories.length);
   
   menu.filterMenu = function () {
     if (!menu.searchTerm) {
