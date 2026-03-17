@@ -80,6 +80,6 @@ function NarrowItDownController(MenuSearchService) {
   service.removeItem = function (itemIndex) {
 
   };
-}
+
 
 })();
