@@ -8,6 +8,8 @@
       <thead>
         <tr>
           <th>No</th>
+          <th>Name</th>
+          <th>Short Name</th>
           <th>Description</th>
           <th></th>
         </tr>
@@ -15,6 +17,8 @@
       <tbody>
         <tr ng-repeat="item in foundItems">
           <td> {{ $index+1 }} </td>
+          <td> {{ item.name }} </td>
+          <td> {{ item.short_name }} </td>
           <td> {{ item.description }} </td>
           <td> <button ng-click="onRemove({index: $index});">Don't want this one!</button></td>
         </tr>
