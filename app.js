@@ -47,35 +47,36 @@ function NarrowItDownController(MenuSearchService) {
   };
 }
 
-MenuSearchService.$inject = ['$http', 'ApiBasePath'];
-function MenuSearchService($http, ApiBasePath) {
-  var service = this;
+  MenuSearchService.$inject = ['$http'];
+  function MenuSearchService($http) {
+    var service = this;
 
-  service.getMatchedMenuItems = function (searchTerm) {
-    
-    return $http({
-      method: "GET",
-      url: (ApiBasePath + "/menu_items.json")
-    })
-    .then(function (result) {
-      // process result and only keep items that match
+    service.getMatchedMenuItems = function (searchTerm) {
+      return $http({
+        method: "GET",
+        url: "https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json"
+      }).then(function (result) {
         var allItems = [];
-        var foundItems = [];
-           
-        // Iterate through all categories and collect all menu items
-        for (var category in result.data) {
-             if (result.data[category].menu_items) {
+            var foundItems = [];
+            
+            // Iterate through all categories and collect all menu items
+            for (var category in result.data) {
+              if (result.data[category].menu_items) {
                 allItems = allItems.concat(result.data[category].menu_items);
-             }
-        }
-        // Filter items by search term
-        for (var i = 0; i < allItems.length; i++) {
-           if (allItems[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
-              foundItems.push(allItems[i]);
-           }
-        }
+              }
+            }
+
+            // Filter items by search term
+            for (var i = 0; i < allItems.length; i++) {
+              if (allItems[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+                foundItems.push(allItems[i]);
+              }
+            }
+
         return foundItems;
-  });
+      });
+    };
+  }
 
   service.removeItem = function (itemIndex) {
 
